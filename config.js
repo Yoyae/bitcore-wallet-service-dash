@@ -6,7 +6,7 @@ var config = {
   // Uncomment to make BWS a forking server
   // cluster: true,
 
-  // Uncomment to set the number or process (will use the # of available CPUs by default)
+  // Uncomment to set the number or process (will use the nr of availalbe CPUs by default)
   // clusterInstances: 4,
 
   // https: true,
@@ -38,19 +38,24 @@ var config = {
     },
   },
   blockchainExplorerOpts: {
-    livenet: {
-      provider: 'insight',
-      url: 'https://insight.dashevo.org',
-      apiPrefix:'/insight-api-dash'
+    btc: {
+      livenet: {
+        provider: 'insight',
+        url: 'https://insight.bitpay.com:443',
+      },
+      testnet: {
+        provider: 'insight',
+        url: 'https://test-insight.bitpay.com:443',
+        // url: 'http://localhost:3001',
+        // Multiple servers (in priority order)
+        // url: ['http://a.b.c', 'https://test-insight.bitpay.com:443'],
+      },
     },
-    testnet: {
-      provider: 'insight',
-      url: 'https://testnet-insight.dashevo.org',
-      apiPrefix:'/insight-api-dash'
-      // url: 'https://test-insight.dash.org',
-      // url: 'http://localhost:3001',
-      // Multiple servers (in priority order)
-      // url: ['http://a.b.c', 'https://test-insight.bitpay.com:443'],
+    bch: {
+      livenet: {
+        provider: 'insight',
+        url: 'https://cashexplorer.bitcoin.com',
+      },
     },
   },
   pushNotificationsOpts: {

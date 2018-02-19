@@ -110,6 +110,7 @@ describe('Push notifications', function() {
               calls.length.should.equal(1);
               args[0].body.notification.title.should.contain('New payment received');
               args[0].body.notification.body.should.contain('123,000');
+              args[0].body.notification.body.should.contain('bits');
               done();
             }, 100);
           });
@@ -350,7 +351,7 @@ describe('Push notifications', function() {
       helpers.stubUtxos(server, wallet, 1, function() {
         var txOpts = {
           outputs: [{
-            toAddress: 'XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD',
+            toAddress: '18PzpUFkFZE8zKWUPvfykkTxmB9oMR8qP7',
             amount: 0.8e8
           }],
           feePerKb: 100e2
@@ -368,7 +369,7 @@ describe('Push notifications', function() {
             txpId = txp.id;
             async.eachSeries(_.range(1, 3), function(i, next) {
               var copayer = TestData.copayers[i];
-              helpers.getAuthServer(copayer.id44, function(server) {
+              helpers.getAuthServer(copayer.id44btc, function(server) {
                 server.rejectTx({
                   txProposalId: txp.id,
                 }, next);
@@ -395,7 +396,7 @@ describe('Push notifications', function() {
       helpers.stubUtxos(server, wallet, 1, function() {
         var txOpts = {
           outputs: [{
-            toAddress: 'XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD',
+            toAddress: '18PzpUFkFZE8zKWUPvfykkTxmB9oMR8qP7',
             amount: 0.8e8
           }],
           feePerKb: 100e2
@@ -413,7 +414,7 @@ describe('Push notifications', function() {
             txp = t;
             async.eachSeries(_.range(1, 3), function(i, next) {
               var copayer = TestData.copayers[i];
-              helpers.getAuthServer(copayer.id44, function(s) {
+              helpers.getAuthServer(copayer.id44btc, function(s) {
                 server = s;
                 var signatures = helpers.clientSign(txp, copayer.xPrivKey_44H_0H_0H);
                 server.signTx({
@@ -520,7 +521,7 @@ describe('Push notifications', function() {
           var args = _.filter(_.map(calls, function(call) {
             return call.args[0];
           }), function(arg) {
-            return arg.body.notification.title == 'New copayer' || arg.body.notification.title == 'New copayer\r';
+            return arg.body.notification.title == 'New copayer';
           });
 
           server.getWallet(null, function(err, wallet) {
