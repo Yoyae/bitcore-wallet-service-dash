@@ -73,11 +73,11 @@ An example of this configuration is:
   blockchainExplorerOpts: {
     livenet: {
       provider: 'insight',
-      url: 'http://insight.monoeci.io',
+      url: 'https://insight.bitpay.com:443',
     },
     testnet: {
       provider: 'insight',
-      url: 'http://test-insight.monoeci.io,
+      url: 'https://test-insight.bitpay.com:443',
     },
   }
 ```

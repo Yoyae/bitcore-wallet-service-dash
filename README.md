@@ -1,9 +1,9 @@
 
-# bitcore-wallet-service-monoeci
+# bitcore-wallet-service
 
-[![NPM Package](https://img.shields.io/npm/v/bitcore-wallet-service-monoeci.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-wallet-service-monoeci)
-[![Build Status](https://img.shields.io/travis/Yoyae/bitcore-wallet-service-monoeci.svg?branch=master&style=flat-square)](https://travis-ci.org/Yoyae/bitcore-wallet-service-monoeci)
-[![Coverage Status](https://coveralls.io/repos/Yoyae/bitcore-wallet-service-monoeci/badge.svg?branch=master)](https://coveralls.io/r/Yoyae/bitcore-wallet-service-monoeci?branch=master)
+[![NPM Package](https://img.shields.io/npm/v/bitcore-wallet-service.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-wallet-service)
+[![Build Status](https://img.shields.io/travis/bitpay/bitcore-wallet-service.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/bitcore-wallet-service)
+[![Coverage Status](https://coveralls.io/repos/bitpay/bitcore-wallet-service/badge.svg?branch=master)](https://coveralls.io/r/bitpay/bitcore-wallet-service?branch=master)
 
 A Multisig HD Bitcore Wallet Service.
 
@@ -21,9 +21,10 @@ More about BWS at https://blog.bitpay.com/announcing-the-bitcore-wallet-suite/
 
 # Getting Started
 ```
- git clone https://github.com/Yoyae/bitcore-wallet-service-monoeci.git
- cd bitcore-wallet-service-monoeci && npm start
+ git clone https://github.com/bitpay/bitcore-wallet-service.git
+ cd bitcore-wallet-service && npm start
 ```
+
 
 This will launch the BWS service (with default settings) at `http://localhost:3232/bws/api`.
 
@@ -50,7 +51,29 @@ BWS can be used with PM2 with the provided `app.js` script:
   * Addresses and change addresses are derived independently and locally by the copayers from their local data.
   * TX Proposals templates are signed by copayers and verified by others, so the BWS cannot create or tamper with them.
 
+# Using SSL
+
+  You can add your certificates at the config.js using:
+
+``` json
+   https: true,
+   privateKeyFile: 'private.pem',
+   certificateFile: 'cert.pem',
+  ////// The following is only for certs which are not
+  ////// trusted by nodejs 'https' by default
+  ////// CAs like Verisign do not require this
+  // CAinter1: '', // ex. 'COMODORSADomainValidationSecureServerCA.crt'
+  // CAinter2: '', // ex. 'COMODORSAAddTrustCA.crt'
+  // CAroot: '', // ex. 'AddTrustExternalCARoot.crt'
+```
+
+@dabura667 made a report about how to use letsencrypt with BWS: https://github.com/bitpay/bitcore-wallet-service/issues/423
+  
+
 # REST API
+
+Note: all currency amounts are in units of satoshis (1/100,000,000 of a bitcoin).
+
 ## Authentication
 
   In order to access a wallet, clients are required to send the headers:
@@ -164,7 +187,7 @@ Returns:
  * TX Proposal object. (see [fields on the source code](https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js)). `.id` is probably needed in this case.
 
 
-`/v1/addresses/`: Request a new main address from wallet
+`/v3/addresses/`: Request a new main address from wallet . (creates an address on normal conditions)
 
 Returns:
  * Address object: (https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/address.js)). Note that `path` is returned so client can derive the address independently and check server's response.
