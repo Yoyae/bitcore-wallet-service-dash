@@ -8,35 +8,35 @@ var should = chai.should;
 var AddressTranslator = require('../lib/addresstranslator');
 
 describe('#AddressTranslator', function() {
-  it('should translate address from btc to bch', function() {
-    var res = AddressTranslator.translate('XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD', 'bch');
+  it('should translate address from xmcc to xmcc', function() {
+    var res = AddressTranslator.translate('XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD', 'xmcc');
     assert( res == 'CX4VTCrhYNzi7fh2zhpSpbdKKn8EdYGGPe');
   });
-  it('should translate address from bch to btc', function() {
+  it('should translate address from xmcc to xmcc', function() {
     var res = AddressTranslator.translateInput('HBf8isgS8EXG1r3X6GP89FmooUmiJ42wHS');
     assert(res=='7XYf6GXX5uQEPShSWCPUWFEvhNb5Ez2JrE');
   });
 
-  it('should keep the address if there is nothing to do (bch)', function() {
-    var res = AddressTranslator.translate('CcJ4qUfyQ8x5NwhAeCQkrBSWVeXxXghcNz', 'bch');
+  it('should keep the address if there is nothing to do (xmcc)', function() {
+    var res = AddressTranslator.translate('CcJ4qUfyQ8x5NwhAeCQkrBSWVeXxXghcNz', 'xmcc');
     assert(res=='CcJ4qUfyQ8x5NwhAeCQkrBSWVeXxXghcNz');
   });
-  it('should keep the address if there is nothing to do (btc)', function() {
-    var res = AddressTranslator.translate('XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD', 'btc');
+  it('should keep the address if there is nothing to do (xmcc)', function() {
+    var res = AddressTranslator.translate('XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD', 'xmcc');
     assert(res=='XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD');
   });
   it('should support 3 params NOK', function() {
 
     var a;
     try {
-      var res = AddressTranslator.translate('XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD', 'btc', 'bch');
+      var res = AddressTranslator.translate('XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD', 'xmcc', 'xmcc');
     } catch (e) {
       a=e.toString();
       assert(a.match(/Address has mismatched network type/));
     };
   });
   it('should support 3 params OK', function() {
-    var res = AddressTranslator.translate('HBf8isgS8EXG1r3X6GP89FmooUmiJ42wHS', 'btc', 'bch');
+    var res = AddressTranslator.translate('HBf8isgS8EXG1r3X6GP89FmooUmiJ42wHS', 'xmcc', 'xmcc');
     assert(res=='7XYf6GXX5uQEPShSWCPUWFEvhNb5Ez2JrE');
   });
 

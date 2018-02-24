@@ -38,7 +38,7 @@ BWS uses by default a Request Rate Limitation to CreateWallet endpoint. If you n
 BWS can be used with PM2 with the provided `app.js` script: 
  
 ```
-  pm2 start app.js --name "bitcoin-wallet-service"
+  pm2 start app.js --name "monoeci-wallet-service"
 ```
 
 # Security Considerations
@@ -152,7 +152,7 @@ Returns:
 `/v1/txproposals/`: Add a new transaction proposal
 
 Required Arguments:
- * toAddress: RCPT Bitcoin address.
+ * toAddress: RCPT Monoeci address.
  * amount: amount (in satoshis) of the mount proposed to be transfered
  * proposalsSignature: Signature of the proposal by the creator peer, using proposalSigningKey.
  * (opt) message: Encrypted private message to peers.
