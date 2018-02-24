@@ -12,7 +12,7 @@ var tingodb = require('tingodb')({
   memStore: true
 });
 
-var Bitcore = require('bitcore-lib');
+var Bitcore = require('bitcore-lib-monoeci');
 var Bitcore_ = {
   btc: Bitcore,
   bch: require('bitcore-lib-cash')
@@ -380,22 +380,8 @@ helpers.stubFeeLevels = function(levels) {
   };
 };
 
-
-var stubAddressActivityFailsOn = null;
-var stubAddressActivityFailsOnCount=1;
-helpers.stubAddressActivity = function(activeAddresses, failsOn) {
-
-  stubAddressActivityFailsOnCount=1;
-
-  // could be null
-  stubAddressActivityFailsOn = failsOn;
-
+helpers.stubAddressActivity = function(activeAddresses) {
   blockchainExplorer.getAddressActivity = function(address, cb) {
-    if (stubAddressActivityFailsOnCount === stubAddressActivityFailsOn) 
-      return cb('failed on request');
-
-    stubAddressActivityFailsOnCount++;
-
     return cb(null, _.contains(activeAddresses, address));
   };
 };
@@ -407,7 +393,11 @@ helpers.clientSign = function(txp, derivedXPrivKey) {
   var privs = [];
   var derived = {};
 
-  var xpriv = new Bitcore.HDPrivateKey(derivedXPrivKey, txp.network);
+  if (txp.coin == 'bch') {
+      var xpriv = new Bitcore_.bch.HDPrivateKey(derivedXPrivKey, txp.network);
+  } else {
+      var xpriv = new Bitcore.HDPrivateKey(derivedXPrivKey, txp.network);
+  }
 
   _.each(txp.inputs, function(i) {
     if (!derived[i.path]) {
