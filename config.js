@@ -38,7 +38,7 @@ var config = {
     },
   },
   blockchainExplorerOpts: {
-    xmcc: {
+    btc: {
       livenet: {
         provider: 'insight',
         url: 'http://insight.monoeci.io',
@@ -53,11 +53,17 @@ var config = {
         // url: ['http://a.b.c', 'https://test-insight.bitpay.com:443'],
       },
     },
+    bch: {
+      livenet: {
+        provider: 'insight',
+        url: 'https://cashexplorer.bitcoin.com',
+      },
+    },
   },
   pushNotificationsOpts: {
     templatePath: './lib/templates',
     defaultLanguage: 'en',
-    defaultUnit: 'xmcc',
+    defaultUnit: 'btc',
     subjectPrefix: '',
     pushServerUrl: 'https://fcm.googleapis.com/fcm',
     authorizationKey: '',
@@ -75,7 +81,7 @@ var config = {
   //  from: 'wallet-service@bitcore.io',
   //  templatePath: './lib/templates',
   //  defaultLanguage: 'en',
-  //  defaultUnit: 'xmcc',
+  //  defaultUnit: 'btc',
   //  publicTxUrlTemplate: {
   //    livenet: 'https://insight.bitpay.com/tx/{{txid}}',
   //    testnet: 'https://test-insight.bitpay.com/tx/{{txid}}',

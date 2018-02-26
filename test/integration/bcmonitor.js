@@ -48,7 +48,7 @@ describe('Blockchain monitor', function() {
           messageBroker: server.messageBroker,
           storage: storage,
           blockchainExplorers: {
-            'xmcc': {
+            'btc': {
               'testnet': blockchainExplorer,
               'livenet': blockchainExplorer
             }

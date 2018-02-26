@@ -1,11 +1,11 @@
 {
   "name": "bitcore-wallet-service-monoeci",
-  "description": "A service for Mutisig HD Monoeci Wallets",
+  "description": "A service for Mutisig HD Bitcoin Wallets",
   "author": "BitPay Inc",
   "version": "2.3.0",
   "licence": "MIT",
   "keywords": [
-    "monoeci",
+    "bitcoin",
     "copay",
     "multisig",
     "wallet",
@@ -22,6 +22,7 @@
   "dependencies": {
     "async": "^0.9.2",
     "bitcore-lib-monoeci": "yoyae/bitcore-lib-monoeci",
+    "bitcore-lib-cash": "^0.16.1",
     "body-parser": "^1.11.0",
     "compression": "^1.6.2",
     "coveralls": "^2.11.2",

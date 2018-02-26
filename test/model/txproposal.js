@@ -24,10 +24,10 @@ describe('TxProposal', function() {
       should.exist(txp);
       txp.amount.should.equal(aTXP().amount);
     });
-    it('should default to XMCC coin', function() {
+    it('should default to BTC coin', function() {
       var txp = TxProposal.fromObj(aTXP());
       should.exist(txp);
-      txp.coin.should.equal('xmcc');
+      txp.coin.should.equal('btc');
     });
   });
 
@@ -119,7 +119,7 @@ var theRawTx = '01000000013768fb3473c0f10758abc1fda4ef8c54f059003f2d448968c0ad80
 var aTxpOpts = function(type) {
 
   var opts = {
-    coin: 'xmcc',
+    coin: 'btc',
     network: 'livenet',
     message: 'some message'
   };

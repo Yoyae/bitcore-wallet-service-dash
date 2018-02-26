@@ -12,7 +12,8 @@ log.level = 'info';
 
 var Bitcore = require('bitcore-lib-monoeci');
 var Bitcore_ = {
-  xmcc: Bitcore
+  btc: Bitcore,
+  bch: require('bitcore-lib-cash')
 };
 
 var Common = require('../../lib/common');
@@ -439,7 +440,7 @@ describe('Wallet service', function() {
 
     it('should create wallet for another coin', function(done) {
       var opts = {
-        coin: 'xmcc',
+        coin: 'bch',
         name: 'my wallet',
         m: 2,
         n: 3,
@@ -449,7 +450,7 @@ describe('Wallet service', function() {
         should.not.exist(err);
         server.storage.fetchWallet(walletId, function(err, wallet) {
           should.not.exist(err);
-          wallet.coin.should.equal('xmcc');
+          wallet.coin.should.equal('bch');
           done();
         });
       });
@@ -673,7 +674,7 @@ describe('Wallet service', function() {
           name: 'me',
           xPubKey: TestData.copayers[0].xPubKey_44H_0H_0H,
           requestPubKey: TestData.copayers[0].pubKey_1H_0,
-          coin: 'xmcc',
+          coin: 'bch',
         });
         server.joinWallet(copayerOpts, function(err) {
           should.exist(err);
@@ -1254,7 +1255,7 @@ describe('Wallet service', function() {
           address.network.should.equal('livenet');
           address.address.should.equal('7XYf6GXX5uQEPShSWCPUWFEvhNb5Ez2JrE');
           address.isChange.should.be.false;
-          address.coin.should.equal('xmcc');
+          address.coin.should.equal('btc');
           address.path.should.equal('m/0/0');
           address.type.should.equal('P2SH');
           server.getNotifications({}, function(err, notifications) {
@@ -1305,10 +1306,10 @@ describe('Wallet service', function() {
     });
 
 
-    describe('shared wallets (BIP44/xmcc)', function() {
+    describe('shared wallets (BIP44/BCH)', function() {
       beforeEach(function(done) {
         helpers.createAndJoinWallet(2, 2, {
-          coin: 'xmcc'
+          coin: 'bch'
         }, function(s, w) {
           server = s;
           wallet = w;
@@ -1326,7 +1327,7 @@ describe('Wallet service', function() {
           address.isChange.should.be.false;
           address.path.should.equal('m/0/0');
           address.type.should.equal('P2SH');
-          address.coin.should.equal('xmcc');
+          address.coin.should.equal('bch');
           server.getNotifications({}, function(err, notifications) {
             should.not.exist(err);
             var notif = _.find(notifications, {
@@ -1379,7 +1380,7 @@ describe('Wallet service', function() {
         helpers.createAndJoinWallet(1, 1, function(s, w) {
           server = s;
           wallet = w;
-          w.copayers[0].id.should.equal(TestData.copayers[0].id44xmcc);
+          w.copayers[0].id.should.equal(TestData.copayers[0].id44btc);
           done();
         });
       });
@@ -1758,7 +1759,7 @@ describe('Wallet service', function() {
       var requestPubKeyStr = requestPubKey.toString();
       var sig = helpers.signRequestPubKey(requestPubKeyStr, xPrivKey);
 
-      var copayerId = Model.Copayer._xPubToCopayerId('xmcc', TestData.copayers[0].xPubKey_44H_0H_0H);
+      var copayerId = Model.Copayer._xPubToCopayerId('btc', TestData.copayers[0].xPubKey_44H_0H_0H);
       opts = {
         copayerId: copayerId,
         requestPubKey: requestPubKeyStr,
@@ -1988,12 +1989,12 @@ describe('Wallet service', function() {
       helpers.stubUtxos(server, wallet, 1, function() {
         var spy = sinon.spy(server, '_getBlockchainExplorer');
         server.getBalance({
-          coin: 'xmcc'
+          coin: 'bch'
         }, function(err, balance) {
           should.not.exist(err);
           should.exist(balance);
           var args = spy.getCalls()[0].args;
-          args[0].should.equal('xmcc');
+          args[0].should.equal('bch');
           done();
         });
       });
@@ -2752,7 +2753,7 @@ describe('Wallet service', function() {
     before(function() {
       levels = Defaults.FEE_LEVELS;
       Defaults.FEE_LEVELS = {
-        xmcc: [{
+        btc: [{
           name: 'urgent',
           nbBlocks: 1,
           multiplier: 1.5,
@@ -2830,7 +2831,7 @@ describe('Wallet service', function() {
         fees = _.zipObject(_.map(fees, function(item) {
           return [item.level, item.feePerKb];
         }));
-        var defaults = _.zipObject(_.map(Defaults.FEE_LEVELS['xmcc'], function(item) {
+        var defaults = _.zipObject(_.map(Defaults.FEE_LEVELS['btc'], function(item) {
           return [item.name, item.defaultValue];
         }));
         fees.priority.should.equal(defaults.priority);
@@ -2893,7 +2894,7 @@ describe('Wallet service', function() {
       });
     });
     it('should get monotonically decreasing fee values', function(done) {
-      _.find(Defaults.FEE_LEVELS['xmcc'], {
+      _.find(Defaults.FEE_LEVELS['btc'], {
         nbBlocks: 6
       }).defaultValue.should.equal(25000);
       helpers.stubFeeLevels({
@@ -2988,10 +2989,10 @@ describe('Wallet service', function() {
       server.getFeeLevels({}, function(err, fees, fromCache) {
         should.not.exist(err);
         should.not.exist(fromCache);
-        server.getFeeLevels({coin:'xmcc'}, function(err, fees, fromCache) {
+        server.getFeeLevels({coin:'bch'}, function(err, fees, fromCache) {
           should.not.exist(err);
           should.not.exist(fromCache);
-          server.getFeeLevels({coin:'xmcc', network:'testnet'}, function(err, fees, fromCache) {
+          server.getFeeLevels({coin:'bch', network:'testnet'}, function(err, fees, fromCache) {
             should.not.exist(err);
             should.not.exist(fromCache);
             done();
@@ -3076,16 +3077,16 @@ describe('Wallet service', function() {
   // XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD
   // 18PzpUFkFZE8zKWUPvfykkTxmB9oMR8qP7
   var addrMap = {
-    xmcc: 'XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD',
-    xmcc: 'CPrtPWbp8cCftTQu5fzuLG5zPJNDHMMf8X',
+    btc: 'XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD',
+    bch: 'CPrtPWbp8cCftTQu5fzuLG5zPJNDHMMf8X',
   }
 
   var idKeyMap = {
-      xmcc: 'id44xmcc',
-      xmcc: 'id44xmcc',
+      btc: 'id44btc',
+      bch: 'id44bch',
   };
 
-  _.each(['xmcc','xmcc'], function(coin) {
+  _.each(['bch','btc'], function(coin) {
   
     describe('#createTx ' + coin, function() {
       var addressStr, idKey;
@@ -3174,7 +3175,7 @@ describe('Wallet service', function() {
             });
           });
           it('should fail to create tx for address of different network', function(done) {
-            if (coin == 'xmcc') { var toAddress = 'myE38JHdxmQcTJGP1ZiX4BiGhDxMJDvLJD'; } else { var toAddress = 'yj3v6A6gQkiRxmccbGwvahiFZ6EfpYxk9na' }
+            if (coin == 'bch') { var toAddress = 'myE38JHdxmQcTJGP1ZiX4BiGhDxMJDvLJD'; } else { var toAddress = 'yj3v6A6gQkiRbChbGwvahiFZ6EfpYxk9na' }
             helpers.stubUtxos(server, wallet, 1, function() {
               var txOpts = {
                 outputs: [{
@@ -3671,8 +3672,8 @@ describe('Wallet service', function() {
         describe('Fee levels', function() {
           it('should create a tx specifying feeLevel', function(done) {
             //ToDo
-            var level = wallet.coin == 'xmcc' ? 'economy' : 'normal';
-            var expected = wallet.coin == 'xmcc' ? 180e2 : 200e2;
+            var level = wallet.coin == 'btc' ? 'economy' : 'normal';
+            var expected = wallet.coin == 'btc' ? 180e2 : 200e2;
             helpers.stubFeeLevels({
               1: 400e2,
               2: 200e2,
@@ -4517,7 +4518,7 @@ describe('Wallet service', function() {
         });
       });
       it('should select unconfirmed utxos if not enough confirmed utxos', function(done) {
-        helpers.stubUtxos(server, wallet, ['u 1xmcc', '0.5xmcc'], function() {
+        helpers.stubUtxos(server, wallet, ['u 1btc', '0.5btc'], function() {
           var txOpts = {
             outputs: [{
               toAddress: 'XqHSiRAXd3EmNUPCAqok6ch5XzVWqKg7VD',
@@ -7362,7 +7363,7 @@ describe('Wallet service', function() {
 
           blockchainExplorer.getBlockchainHeight = sinon.stub().callsArgWith(0, null, 2000);
           server._notify('NewBlock', {
-            coin: 'xmcc',
+            coin: 'btc',
             network: 'livenet',
             hash: 'dummy hash',
           }, {
@@ -8274,7 +8275,7 @@ describe('Wallet service', function() {
       });
     });
     it('should get wallet from tx proposal', function(done) {
-      helpers.stubUtxos(server, wallet, '1 xmcc', function() {
+      helpers.stubUtxos(server, wallet, '1 btc', function() {
         helpers.stubBroadcast();
         var txOpts = {
           outputs: [{
@@ -8342,51 +8343,51 @@ describe('Wallet service', function() {
     });
   });
 
-  describe('XMCC & xmcc wallets with same seed', function() {
+  describe('BTC & BCH wallets with same seed', function() {
     var server = {},
       wallet = {};
     beforeEach(function(done) {
       helpers.createAndJoinWallet(1, 1, function(s, w) {
-        server.xmcc = s;
-        wallet.xmcc = w;
-        w.copayers[0].id.should.equal(TestData.copayers[0].id44xmcc);
+        server.btc = s;
+        wallet.btc = w;
+        w.copayers[0].id.should.equal(TestData.copayers[0].id44btc);
         helpers.createAndJoinWallet(1, 1, {
-          coin: 'xmcc'
+          coin: 'bch'
         }, function(s, w) {
-          server.xmcc = s;
-          wallet.xmcc = w;
-          w.copayers[0].id.should.equal(TestData.copayers[0].id44xmcc);
+          server.bch = s;
+          wallet.bch = w;
+          w.copayers[0].id.should.equal(TestData.copayers[0].id44bch);
           done();
         });
       });
     });
 
     it('should create address', function(done) {
-      server.xmcc.createAddress({}, function(err, address) {
+      server.btc.createAddress({}, function(err, address) {
         should.not.exist(err);
         should.exist(address);
-        address.walletId.should.equal(wallet.xmcc.id);
-        address.coin.should.equal('xmcc');
+        address.walletId.should.equal(wallet.btc.id);
+        address.coin.should.equal('btc');
         address.network.should.equal('livenet');
         address.address.should.equal('Xujpyb3X5oDqfMJEuoXzyfwaSVDSg3vFPm');
-        server.xmcc.createAddress({}, function(err, address) {
+        server.bch.createAddress({}, function(err, address) {
           should.not.exist(err);
           should.exist(address);
-          address.walletId.should.equal(wallet.xmcc.id);
-          address.coin.should.equal('xmcc');
+          address.walletId.should.equal(wallet.bch.id);
+          address.coin.should.equal('bch');
           address.network.should.equal('livenet');
           address.address.should.equal('CbWsiNjh18ynQYc5jfYhhespEGrAaW8YUq');
-          server.xmcc.getMainAddresses({}, function(err, addresses) {
+          server.btc.getMainAddresses({}, function(err, addresses) {
             should.not.exist(err);
             addresses.length.should.equal(1);
-            addresses[0].coin.should.equal('xmcc');
-            addresses[0].walletId.should.equal(wallet.xmcc.id);
+            addresses[0].coin.should.equal('btc');
+            addresses[0].walletId.should.equal(wallet.btc.id);
             addresses[0].address.should.equal('Xujpyb3X5oDqfMJEuoXzyfwaSVDSg3vFPm');
-            server.xmcc.getMainAddresses({}, function(err, addresses) {
+            server.bch.getMainAddresses({}, function(err, addresses) {
               should.not.exist(err);
               addresses.length.should.equal(1);
-              addresses[0].coin.should.equal('xmcc');
-              addresses[0].walletId.should.equal(wallet.xmcc.id);
+              addresses[0].coin.should.equal('bch');
+              addresses[0].walletId.should.equal(wallet.bch.id);
               addresses[0].address.should.equal('CbWsiNjh18ynQYc5jfYhhespEGrAaW8YUq');
               done();
             });
