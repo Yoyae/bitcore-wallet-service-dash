@@ -41,12 +41,12 @@ var config = {
     btc: {
       livenet: {
         provider: 'insight',
-        url: 'http://insight.monoeci.io',
+        url: 'https://insight.monoeci.io',
         apiPrefix:'/insight-api-monoeci'
       },
       testnet: {
         provider: 'insight',
-        url: 'http://testnet-insight.monoeci.io',
+        url: 'https://testnet-insight.monoeci.io',
         apiPrefix:'/insight-api-monoeci'
         // url: 'http://localhost:3001',
         // Multiple servers (in priority order)
@@ -77,7 +77,7 @@ var config = {
   //  host: 'localhost',
   //  port: 25,
   //  ignoreTLS: true,
-  //  subjectPrefix: '[Wallet Service]',
+  //  subjectPrefix: '[Wallet Service Monoeci]',
   //  from: 'wallet-service@bitcore.io',
   //  templatePath: './lib/templates',
   //  defaultLanguage: 'en',
