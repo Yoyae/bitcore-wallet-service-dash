@@ -17,7 +17,7 @@
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/yoyae/bitcore-wallet-service-monoeci/issues"
+    "url": "https://github.com/yoyae/bitcore-wallet-service-polis/issues"
   },
   "dependencies": {
     "async": "^0.9.2",

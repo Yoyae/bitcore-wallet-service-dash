@@ -73,11 +73,11 @@ An example of this configuration is:
   blockchainExplorerOpts: {
     livenet: {
       provider: 'insight',
-      url: 'https://insight.monoeci.io',
+      url: 'https://insight.bitpay.com:443',
     },
     testnet: {
       provider: 'insight',
-      url: 'https://testnet-insight.monoeci.io',
+      url: 'https://test-insight.bitpay.com:443',
     },
   }
 ```
@@ -89,8 +89,8 @@ Example configuration for connecting to email service (using postfix):
     host: 'localhost',
     port: 25,
     ignoreTLS: true,
-    subjectPrefix: '[Wallet Service Monoeci]',
-    from: 'wallet@monoeci.io',
+    subjectPrefix: '[Wallet Service]',
+    from: 'wallet-service@bitcore.io',
   }
 ```
 
